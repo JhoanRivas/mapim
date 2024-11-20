@@ -1,0 +1,80 @@
+/* Reset y ajustes globales */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    text-decoration: none;
+    font-family: "Roboto", sans-serif;
+}
+
+body {
+    background-image: url(/static/images/bg5.jpg);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-attachment: fixed;
+    font-family: Arial, sans-serif;
+}
+
+/* Configuración de contenedor principal */
+main {
+    width: 100%;
+    padding: 20px;
+    margin: auto;
+    margin-top: 100px;
+}
+
+.container {
+    background-color: #ffffff;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Estilos para títulos y textos */
+.card-title {
+    color: #003366;
+    font-weight: bold;
+}
+
+.text-center {
+    color: #4a148c;
+}
+
+/* Estilos para tablas */
+.table th, .table td {
+    vertical-align: middle;
+    text-align: center;
+}
+
+/* Botones */
+.btn-primary {
+    background-color: #4a148c;
+    border: none;
+}
+
+
+
+.btn-primary:hover {
+    background-color: #6a1b9a;
+}
+
+/* Estilos adicionales para organizar la vista previa de la imagen */
+#previewContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: 1px solid #ccc;
+    padding: 15px;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+}
+
+#previewImage {
+    max-width: 100%;
+    max-height: 300px;
+    margin-top: 10px;
+    display: none;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+}

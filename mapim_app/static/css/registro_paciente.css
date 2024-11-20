@@ -1,0 +1,64 @@
+
+/* Contenedor principal del formulario */
+.container-form {
+    background-color: #ffffff;
+    border-radius: 10px;
+    padding: 30px;
+    max-width: 700px;
+    margin: 10px auto;
+}
+
+/* Estilos de los campos de entrada */
+.form-input {
+    width: 100%;
+    padding: 10px;
+    margin: 8px 0;
+    border: 1px solid #e8e8e8;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+/* Estilo para etiquetas y títulos */
+label {
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #495057;
+}
+
+h1 {
+    color: #6f42c1;
+    font-weight: 600;
+    text-align: center;
+    margin-top: 0;
+}
+
+/* Botón de envío */
+.btn-submit {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    width: 100%;
+}
+
+.btn-submit:hover {
+    background-color: #0056b3;
+}
+
+/* Estilo para filas de dos columnas */
+.form-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+}
+
+.form-row .form-group {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}

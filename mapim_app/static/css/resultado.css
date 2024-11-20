@@ -1,0 +1,162 @@
+
+/* Contenedor principal */
+.container-form {
+    background-color: #f3f4f6;
+    border-radius: 10px;
+    padding: 40px;
+    max-width: 900px;
+    margin: 20px auto;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+/* Título */
+h1 {
+    color: #6f42c1;
+    font-weight: bold;
+    margin-bottom: 30px;
+}
+
+/* Estilos para el campo de ingreso de DNI */
+.form-group {
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.form-group label {
+    font-weight: bold;
+    color: #333;
+    font-size: 16px;
+    display: block;
+    margin-bottom: 5px;
+}
+
+.form-group input {
+    width: 100%;
+    max-width: 500px;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ced4da;
+    border-radius: 5px;
+    font-size: 16px;
+    color: #333;
+}
+
+.btn-search {
+    background-color: #28a745;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.btn-search:hover {
+    background-color: #218838;
+}
+
+/* Sección de imagen como botón con previsualización */
+.image-upload {
+    margin: 20px 0;
+    padding: 20px;
+    background-color: #e9ecef;
+    color: #6c757d;
+    border: 2px dashed #ced4da;
+    border-radius: 10px;
+    font-size: 20px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    flex-direction: column;
+}
+
+.image-upload img {
+    max-width: 100%;
+    max-height: 300px;
+    margin-top: 10px;
+    border-radius: 5px;
+}
+
+/* Flex container for scan button and results */
+.scan-result-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+/* Botón de escaneo */
+.btn-scan {
+    background-color: #28a745;
+    color: white;
+    padding: 10px 30px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.btn-scan:hover {
+    background-color: #218838;
+}
+
+/* Estilo para los resultados */
+.result-container {
+    font-size: 16px;
+    color: #495057;
+    text-align: left;
+    background-color: #e9ecef;
+    padding: 10px 20px;
+    border-radius: 5px;
+    max-width: 500px;
+    width: 100%;
+}
+
+.result-label {
+    font-weight: bold;
+    color: #333;
+    margin-right: 5px;
+}
+
+/* Botón de registro */
+.btn-register {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 30px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top: 20px;
+}
+
+.btn-register:hover {
+    background-color: #0056b3;
+}
+.text-danger {
+    color: red;
+    font-weight: bold;
+}
+
+.text-success {
+    color: green;
+    font-weight: bold;
+}
+
+.text-secondary {
+    color: gray;
+    font-weight: bold;
+}
+
+
+

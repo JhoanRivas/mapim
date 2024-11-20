@@ -1,0 +1,66 @@
+{% extends './base.html' %}
+{% block title %}Historial{% endblock %}
+{% block body %}
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Historial - MAPIM</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <link rel="stylesheet" href="{% static 'css/historial.css' %}">
+
+</head>
+<body>
+    <div class="container">
+        <h1>Historial de Escaneos</h1>
+
+        <!-- Formulario para buscar por DNI y filtrar por Usuario ID -->
+        <div class="form-inline">
+            <form method="get" class="input-group">
+                <input type="text" name="dni" class="form-control" placeholder="Ingrese DNI" style="max-width: 200px;">
+                <button class="btn btn-primary" type="submit">Buscar por DNI</button>
+                <a href="{% url 'historial' %}" class="btn btn-secondary">Recargar</a>
+            </form>
+            
+        </div>
+
+        <!-- Tabla de historial -->
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>DNI</th>
+                    <th>Nombres</th>
+                    <th>Apellidos</th>
+                    <th>Fecha</th>
+                    <th>Tipo</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for historial in historiales %}
+                <tr>
+                    <td>{{ historial.dni_paciente|default:"-" }}</td>
+                    <td>{{ historial.nombres|default:"-"|title }}</td>
+                    <td>{{ historial.apellidos|default:"-"|title }}</td>
+                    <td>{{ historial.fecha|date:"d/m/Y" }}</td>
+                    <td>{{ historial.resultado }}</td>
+                    <td>
+                        <form method="post" action="{% url 'eliminar_historial' historial.id %}">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('¿Estás seguro de eliminar este registro?');">Eliminar</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        
+        
+        
+        
+    </div>
+</body>
+</html>
+{% endblock %}

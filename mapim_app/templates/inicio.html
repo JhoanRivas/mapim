@@ -1,0 +1,43 @@
+{% extends './base.html' %}
+{% block title %}Inicio - MAPIM{% endblock %}
+{%block body%}
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Inicio - MAPIM</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="text-center mb-4">Bienvenido a MAPIM</h1>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h3 class="card-title">NUESTRA MISIÓN</h3>
+                        <p>En MAPIM, estamos comprometidos a ayudar a las mujeres en su lucha contra el cáncer de mama 
+                            utilizando tecnología avanzada y herramientas innovadoras. Nuestro objetivo es proporcionar 
+                            soluciones precisas y eficientes para identificar patrones en mamografías que puedan salvar vidas.</p>
+                    </div>
+                </div>
+                <div class="card mt-3">
+                    <div class="card-body">
+                        <h3 class="card-title">NUESTRA VISIÓN</h3>
+                        <p>Nuestra visión en MAPIM es convertirnos en un referente global en el uso de la inteligencia 
+                            artificial y la tecnología para el diagnóstico temprano y la prevención del cáncer de mama, 
+                            mejorando la calidad de vida de las mujeres en todo el mundo.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <img src="{% static 'images/doctora.png' %}" class="img-fluid" alt="Doctor">
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+{% endblock %}
