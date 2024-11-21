@@ -11,6 +11,7 @@
 </head>
 <body>
     <main>
+           
         <div class="contenedor__todo">
             <div class="caja__trasera">
                 <div class="caja__trasera-login">
@@ -26,22 +27,34 @@
             </div>
             <!-- Formulario de login y registro -->
             <div class="contenedor__login-register">
-                <!-- Login -->
-                <form action="" class="formulario__login" id="loginForm">
-                    <h2>Iniciar Sesión</h2>
-                    <input type="text" placeholder="Correo Electronico" id="correoLogin">
-                    <input type="password" placeholder="Contraseña" id="contraseñaLogin">
-                    <button type="button" id="loginButton">Entrar</button>
-                </form>  
-                <!-- Registro -->      
-                <form action="" class="formulario__register" id="registerForm">
-                    <h2>Regístrarse</h2>
-                    <input type="text" placeholder="Nombre Completo" id="nombreCompleto" pattern="[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+" title="Solo se permiten letras y espacios">
-                    <input type="text" placeholder="Correo Electronico" id="correo">
-                    <input type="text" placeholder="Usuario" id="usuario">
-                    <input type="password" placeholder="Contraseña" id="contraseña">
-                    <button type="button" id="registerButton">Regístrarse</button>
-                </form>
+           <!-- Login -->
+           {% if messages %}
+           <div class="alert-container">
+               {% for message in messages %}
+                   <div class="alert alert-{{ message.tags }}">
+                       {{ message }}
+                   </div>
+               {% endfor %}
+           </div>
+           {% endif %}
+            <form action="{% url 'login_usuario' %}" method="post" class="formulario__login" id="loginForm">
+                {% csrf_token %}
+                <h2>Iniciar Sesión</h2>
+                <input type="email" placeholder="Correo Electrónico" name="email" required>
+                <input type="password" placeholder="Contraseña" name="password" required>
+                <button type="submit">Entrar</button>
+            </form>  
+
+            <!-- Registro -->
+            <form action="{% url 'registrar_usuario' %}" method="post" class="formulario__register" id="registerForm">
+                {% csrf_token %}
+                <h2>Registrarse</h2>
+                <input type="text" placeholder="Nombre Completo" name="nombre_completo" pattern="[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+" title="Solo se permiten letras y espacios" required>
+                <input type="email" placeholder="Correo Electrónico" name="email" required>
+                <input type="text" placeholder="Usuario" name="user" required>
+                <input type="password" placeholder="Contraseña" name="password" required>
+                <button type="submit">Registrarse</button>
+            </form>
             </div>
         </div>        
     </main>

@@ -5,6 +5,7 @@ from django.contrib import messages
 from .forms import RegistroForm
 from django.urls import reverse
 from .models import Historial
+from django.contrib.auth.hashers import make_password,check_password
 import os
 import numpy as np
 from PIL import Image
@@ -43,48 +44,52 @@ def loginviews(request):
 
 
 
-def user_login(request):
+def login_usuario(request):
     if request.method == 'POST':
-        email = request.POST.get('gmail-text')
+        email = request.POST.get('email')
         contraseña = request.POST.get('password')
 
         try:
-            usuario = Usuario.objects.get(email=email, contraseña=contraseña)
-            request.session['usuario_id'] = usuario.id
-            messages.success(request, "Bienvenido")
-            print("Usuario encontrado, redirigiendo a empezar...")
-            return redirect('inicio')
-        except Usuario.DoesNotExist:
-            messages.error(request, "Correo electrónico o contraseña incorrectos")
-    return render(request, 'login.html')    
+            usuario = Usuario.objects.get(email=email)
 
-def registro_view(request):
+            # Verificar la contraseña
+            if check_password(contraseña, usuario.contraseña):
+                request.session['usuario_id'] = usuario.id
+                messages.success(request, f"Bienvenido, {usuario.nombre_completo}!")
+                return redirect('inicio')
+            else:
+                messages.error(request, "Correo o contraseña incorrectos.")
+        except Usuario.DoesNotExist:
+            messages.error(request, "Correo o contraseña incorrectos.")
+    return render(request, 'login.html')
+
+
+def registrar_usuario(request):
     if request.method == 'POST':
         nombre_completo = request.POST.get('nombre_completo')
         email = request.POST.get('email')
         user = request.POST.get('user')
         contraseña = request.POST.get('password')
 
-        
+        # Validar si el correo ya está registrado
         if Usuario.objects.filter(email=email).exists():
-            messages.error(request, "El correo electrónico ya está en uso")
+            messages.error(request, "El correo electrónico ya está en uso.")
             return redirect('login')
 
-        rol_invitado = Rol.objects.get(nombre='invitado')
+        # Asignar rol por defecto
+        rol_invitado, created = Rol.objects.get_or_create(nombre='invitado')
+
+        # Crear y guardar el usuario
         usuario = Usuario.objects.create(
             nombre_completo=nombre_completo,
             email=email,
             user=user,
-            contraseña=contraseña,
+            contraseña=make_password(contraseña),  # Hash de la contraseña
             rol=rol_invitado
         )
-
-        try:
-            usuario.save()
-            messages.success(request, "Cuenta creada con éxito")
-            return redirect('login')
-        except Exception as e:
-            messages.error(request, f"Error al crear la cuenta: {e}")
+        usuario.save()
+        messages.success(request, "Te has registrado correctamente. Ahora puedes iniciar sesión.")
+        return redirect('login')
     return render(request, "login.html")
 
 
@@ -102,7 +107,7 @@ def resultado(request):
 
 #def historial(request):
 #    return render(request, 'historial.html')
-
+ 
 def historial(request):
     dni = request.GET.get('dni', '').strip()  # Obtener el DNI ingresado y eliminar espacios
 
