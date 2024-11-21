@@ -16,15 +16,15 @@
     <div class="container">
         <h1>Historial de Escaneos</h1>
         <!-- Mostrar mensajes de éxito o información -->
-                {% if messages %}
-                <div>
-                    {% for message in messages %}
-                    <div class="alert alert-{{ message.tags }}">
-                        {{ message }}
-                    </div>
-                    {% endfor %}
+        {% if messages %}
+        <div class="alert-container">
+            {% for message in messages %}
+                <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">
+                    {{ message }}
                 </div>
-                {% endif %}
+            {% endfor %}
+        </div>
+        {% endif %}
 
             <!-- Formulario para buscar por DNI -->
             <div class="form-inline">
