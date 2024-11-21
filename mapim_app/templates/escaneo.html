@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
     <link rel="stylesheet" href="{% static 'css/registro_paciente.css' %}">
     <script src="{% static 'js/registro_paciente.js' %}"></script>
-
+ 
 </head>
 <body>
     <div class="container mt-2">
@@ -67,7 +67,14 @@
 
                 <div class="form-group">
                     <label for="fecha_nacimiento">Fecha de Nacimiento:</label>
-                    <input type="date" id="fecha_nacimiento" name="fecha_nacimiento" class="form-input" value="{{ fecha_nacimiento }}">
+                    <input 
+                    type="date" 
+                    id="fecha_nacimiento" 
+                    name="fecha_nacimiento" 
+                    class="form-input" 
+                    value="{{ fecha_nacimiento }}" 
+                    max="{{ max_date }}" 
+                    min="{{ min_date }}">
                 </div>
 
                 <button type="submit" class="btn-submit">Registrar</button>

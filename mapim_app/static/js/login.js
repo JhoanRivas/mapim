@@ -8,7 +8,7 @@ var formulario_login = document.querySelector(".formulario__login");
 var formulario_register = document.querySelector(".formulario__register");
 var caja_trasera_login = document.querySelector(".caja__trasera-login");
 var caja_trasera_register = document.querySelector(".caja__trasera-register");
-
+ 
 function anchoPagina(){
     if(window.innerWidth > 850 ){
         caja_trasera_login.style.display = "block";

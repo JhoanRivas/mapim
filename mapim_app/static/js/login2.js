@@ -5,31 +5,45 @@ document.querySelector('.formulario__register input[placeholder="Nombre Completo
         e.target.value = e.target.value.replace(/[^A-Za-zÁÉÍÓÚáéíóúÑñ\s]/g, '');
     }
 });
+// Evento para el botón de registro
+document.getElementById("registerButton").addEventListener("click", function() {
+    const nombreCompleto = document.getElementById("nombreCompleto").value.trim();
+    const correo = document.getElementById("correo").value.trim();
+    const usuario = document.getElementById("usuario").value.trim();
+    const contraseña = document.getElementById("contraseña").value.trim();
 
-// ***** Login
-document.addEventListener('DOMContentLoaded', function () {
+    if (nombreCompleto === "" || correo === "" || usuario === "" || contraseña === "") {
+        alert("Por favor, completa todos los campos.");
+    } else {
+        localStorage.setItem("nombreCompleto", nombreCompleto);
+        localStorage.setItem("correo", correo);
+        localStorage.setItem("usuario", usuario);
+        localStorage.setItem("contraseña", contraseña);
 
-    const formLogin = document.getElementById('loginForm');
-    const formRegister = document.getElementById('registerForm');
-    const registerLink = document.getElementById('registerButton');
-    const loginLink = document.getElementById('loginButton');
-
-    registerLink.addEventListener('click', function (e) {
-        e.preventDefault();
-        formLogin.classList.add('d-none');
-        formRegister.classList.remove('d-none');
-    });
-
-    loginLink.addEventListener('click', function (e) {
-        e.preventDefault();
-        formRegister.classList.add('d-none');
-        formLogin.classList.remove('d-none');
-    });
-
-    setTimeout(function() {
-        document.getElementById("alert-conteiner").style.display = "none";
-    }, 3000);
-
+        alert("Registro exitoso!");
+        document.getElementById("registerForm").reset();
+    }
 });
 
+// Evento para el botón de login
+document.getElementById("loginButton").addEventListener("click", function() {
+    const correoLogin = document.getElementById("correoLogin").value.trim();
+    const contraseñaLogin = document.getElementById("contraseñaLogin").value.trim();
 
+    // Verificar que los campos de correo y contraseña no estén vacíos
+    if (correoLogin === "" || contraseñaLogin === "") {
+        alert("Por favor, completa todos los campos de inicio de sesión.");
+    } else {
+        // Validación básica de inicio de sesión usando localStorage
+        const correoRegistrado = localStorage.getItem("correo");
+        const contraseñaRegistrada = localStorage.getItem("contraseña");
+
+        if (correoLogin === correoRegistrado && contraseñaLogin === contraseñaRegistrada) {
+            alert("Inicio de sesión exitoso!");
+            // Redirecciona a la página de inicio en Django
+            window.location.href = "/inicio/";  // Redirige a /inicio/ en lugar de /inicio.html
+        } else {
+            alert("Correo o contraseña incorrectos.");
+        }
+    }
+});

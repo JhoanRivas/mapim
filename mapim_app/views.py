@@ -23,6 +23,8 @@ from django.shortcuts import get_object_or_404
 import json
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import Deteccion, Paciente
+from django.db import IntegrityError
+from datetime import datetime, timedelta
 
 
 
@@ -102,11 +104,23 @@ def resultado(request):
 #    return render(request, 'historial.html')
 
 def historial(request):
-    historiales = Historial.objects.all()
+    dni = request.GET.get('dni', '').strip()  # Obtener el DNI ingresado y eliminar espacios
+
+    # Validación del DNI
+    if dni:
+        if not dni.isdigit() or len(dni) != 8:  # Verificar que sea numérico y tenga 8 dígitos
+            messages.error(request, "Por favor, ingrese un DNI válido de 8 dígitos.")
+            return render(request, 'historial.html', {'historiales': []})  # No mostrar resultados
+
+        # Buscar registros por DNI
+        historiales = Historial.objects.filter(dni_paciente=dni)
+        if not historiales.exists():
+            messages.warning(request, f"No se encontraron resultados para el DNI {dni}.")
+    else:
+        messages.error(request, "Por favor, ingrese un DNI válido para buscar.")
+        historiales = []  # No mostrar resultados si el campo está vacío
+
     return render(request, 'historial.html', {'historiales': historiales})
-
-
-
 
 def load_tflite_interpreter():
     current_directory = os.path.dirname(__file__)
@@ -246,7 +260,6 @@ def historial(request):
             historial.apellidos = "-"
 
     return render(request, 'historial.html', {'historiales': historiales})
-
 def registrar_paciente(request):
     if request.method == 'POST':
         dni = request.POST.get('dni')
@@ -258,35 +271,47 @@ def registrar_paciente(request):
         numero_contacto = request.POST.get('numero_contacto')
         usuario_id = request.POST.get('usuario_id')
 
-        # Retrieve the user if it exists, otherwise set it to None
+       # Validación de fecha de nacimiento
+        try:
+            fecha_nacimiento_obj = datetime.strptime(fecha_nacimiento, '%Y-%m-%d').date()
+            today = datetime.today().date()
+            min_date = today - timedelta(days=365*150)  # Hace 150 años
+            max_date = today  # Hoy
+
+            if not (min_date <= fecha_nacimiento_obj <= max_date):
+                messages.warning(request, "La fecha de nacimiento debe estar entre hace 150 años.")
+                return render(request, 'escaneo.html')  # Permanecer en la misma página
+        except (ValueError, TypeError):
+            messages.warning(request, "Fecha de nacimiento inválida. Por favor, ingrese una fecha válida.")
+            return render(request, 'escaneo.html')  # Permanecer en la misma página
+
+        # Obtener el usuario si se proporcionó un ID válido
         usuario = None
         if usuario_id:
             try:
                 usuario = Usuario.objects.get(id=usuario_id)
             except Usuario.DoesNotExist:
                 messages.warning(request, "Usuario no encontrado, se guardará sin usuario asignado.")
-                usuario = None  # No user found, proceed without
-
-        # Create or update patient record
-        paciente, created = Paciente.objects.update_or_create(
-            dni=dni,
-            defaults={
-                'nombres': nombres,
-                'apellido_paterno': apellido_paterno,
-                'apellido_materno': apellido_materno,
-                'fecha_nacimiento': fecha_nacimiento,
-                'direccion': direccion,
-                'numero_contacto': numero_contacto,
-                'usuario': usuario,
-            }
-        )
-
-        if created:
+                usuario = None
+        try:
+            # Intentar crear un nuevo paciente
+            Paciente.objects.create(
+                dni=dni,
+                nombres=nombres,
+                apellido_paterno=apellido_paterno,
+                apellido_materno=apellido_materno,
+                fecha_nacimiento=fecha_nacimiento,
+                direccion=direccion,
+                numero_contacto=numero_contacto,
+                usuario=usuario,
+            )
             messages.success(request, "Paciente registrado exitosamente.")
-        else:
-            messages.info(request, "Información del paciente actualizada.")
+        except IntegrityError:
+            # Capturar error de clave única y mostrar un mensaje
+            messages.warning(request, "El paciente con este DNI ya existe. Por favor, verifique los datos.")
 
-        return redirect('escaneo')
+        # Renderizar la misma página con los mensajes
+        return render(request, 'escaneo.html')
 
     return render(request, 'escaneo.html')
 

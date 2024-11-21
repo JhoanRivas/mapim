@@ -1,7 +1,7 @@
 {% extends './base.html' %}
 {% block title %}Historial{% endblock %}
-{% block body %}
 {% load static %}
+{% block body %}
 
 <!DOCTYPE html>
 <html lang="es">
@@ -15,18 +15,39 @@
 <body>
     <div class="container">
         <h1>Historial de Escaneos</h1>
+        <!-- Mostrar mensajes de éxito o información -->
+                {% if messages %}
+                <div>
+                    {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }}">
+                        {{ message }}
+                    </div>
+                    {% endfor %}
+                </div>
+                {% endif %}
 
-        <!-- Formulario para buscar por DNI y filtrar por Usuario ID -->
-        <div class="form-inline">
-            <form method="get" class="input-group">
-                <input type="text" name="dni" class="form-control" placeholder="Ingrese DNI" style="max-width: 200px;">
-                <button class="btn btn-primary" type="submit">Buscar por DNI</button>
-                <a href="{% url 'historial' %}" class="btn btn-secondary">Recargar</a>
-            </form>
+            <!-- Formulario para buscar por DNI -->
+            <div class="form-inline">
+                <form method="get" class="input-group" id="buscarDniForm">
+                    <input 
+                        type="text" 
+                        id="dni" 
+                        name="dni" 
+                        class="form-control" 
+                        placeholder="Ingrese DNI" 
+                        style="max-width: 200px;" 
+                        value="{{ request.GET.dni|default:'' }}" 
+                        maxlength="8" 
+                        inputmode="numeric" 
+                        oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+                    <button class="btn btn-primary" type="submit">Buscar por DNI</button>
+                    <a href="{% url 'historial' %}" class="btn btn-secondary">Recargar</a>
+                </form>
+            </div>
             
-        </div>
 
         <!-- Tabla de historial -->
+        {% if historiales %}
         <table class="table table-bordered">
             <thead>
                 <tr>
@@ -56,11 +77,30 @@
                 {% endfor %}
             </tbody>
         </table>
-        
-        
-        
-        
+        {% else %}
+        <p>No hay resultados para mostrar.</p>
+        {% endif %}
     </div>
 </body>
 </html>
 {% endblock %}
+
+<script>
+     // Validar que solo se puedan ingresar números en el campo
+     const dniInput = document.getElementById('dni');
+    dniInput.addEventListener('keypress', function(event) {
+        const charCode = event.charCode || event.keyCode;
+        if (charCode < 48 || charCode > 57) {
+            event.preventDefault(); // Bloquear cualquier entrada que no sea numérica
+        }
+    });
+    // Captura el evento submit del formulario
+    document.getElementById('buscarDniForm').addEventListener('submit', function(event) {
+        const dniInput = document.getElementById("dni").value.trim(); // Obtener el valor del campo
+        if (!dniInput) { // Si el campo está vacío
+            alert("Por favor, ingrese un DNI válido antes de buscar."); // Mostrar alerta
+            event.preventDefault(); // Detener el envío del formulario
+            return false; // Asegurar que no continúe
+        }
+    });
+</script>

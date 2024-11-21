@@ -6,7 +6,7 @@ function validateForm() {
         alert("El DNI debe ser de 8 dígitos numéricos y no puede tener todos los dígitos iguales.");
         return false;
     }
-
+ 
     const nombre = document.getElementById("nombres").value;
     const nombreRegex = /^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$/;
     if (!nombreRegex.test(nombre)) {
