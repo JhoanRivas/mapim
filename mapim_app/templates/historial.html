@@ -17,7 +17,7 @@
         <h1>Historial de Escaneos</h1>
         <!-- Mostrar mensajes de éxito o información -->
         {% if messages %}
-        <div class="alert-container">
+        <div class="alert-container ">
             {% for message in messages %}
                 <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">
                     {{ message }}

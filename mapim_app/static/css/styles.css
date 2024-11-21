@@ -115,15 +115,11 @@ main {
     margin: 20px 0;
     text-align: center;
 }
-
 .alert {
     padding: 15px;
+    margin-bottom: 20px;
     border: 1px solid transparent;
     border-radius: 4px;
-    margin-bottom: 10px;
-    font-size: 16px;
-    display: inline-block;
-    width: 90%;
 }
 
 .alert-success {
