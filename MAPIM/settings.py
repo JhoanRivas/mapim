@@ -75,7 +75,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-            #    'mapim.context_processors.usuario_context',  # Aquí agrega tu context processor
+                'mapim_app.context_processors.usuario_context',  # Aquí agrega tu context processor
 
             ],
         },

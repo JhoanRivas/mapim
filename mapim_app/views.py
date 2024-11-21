@@ -1,20 +1,13 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth import login, authenticate
-from django.contrib.auth.models import User
 from django.contrib import messages
-from .forms import RegistroForm
-from django.urls import reverse
 from .models import Historial
 from django.contrib.auth.hashers import make_password,check_password
 import os
 import numpy as np
-from PIL import Image
 import tensorflow as tf
 from django.core.files.base import ContentFile
 from django.core.files.storage import default_storage
-from .utils import preprocess_image, run_inference
-from .utils import preprocess_image, predict_image
-from .utils import run_inference 
+from .utils import run_inference
 from .models import Paciente, Deteccion, Usuario, Rol  # Asegúrate de incluir todos los modelos necesarios
 from .forms import HistorialForm
 import base64
@@ -26,22 +19,30 @@ from django.shortcuts import render, get_object_or_404, redirect
 from .models import Deteccion, Paciente
 from django.db import IntegrityError
 from datetime import datetime, timedelta
-
+from django.shortcuts import render, get_object_or_404
+from .models import Deteccion, Paciente
 
 
 # Vista base - renderiza la página de inicio
 def inicioviews(request):
+    usuario = None
     if request.session.get('usuario_id'):
-        usuario = Usuario.objects.get(id=request.session.get('usuario_id'))
-        print("Usuario:", usuario.user)
-        return render(request, 'inicio.html', {'usuario': usuario})
-    return render(request, 'inicio.html')
+        try:
+            usuario = Usuario.objects.get(id=request.session['usuario_id'])
+        except Usuario.DoesNotExist:
+            pass
+    return render(request, 'inicio.html', {'usuario': usuario})
 
 # Vista para mostrar la página de inicio de sesión
 def loginviews(request):
     return render(request, "login.html") 
 
 
+def logout_usuario(request):
+    if 'usuario_id' in request.session:
+        del request.session['usuario_id']  # Elimina la sesión
+    messages.success(request, "Has cerrado sesión correctamente.")
+    return redirect('login')
 
 
 def login_usuario(request):
@@ -92,22 +93,33 @@ def registrar_usuario(request):
         return redirect('login')
     return render(request, "login.html")
 
-
-#def login(request):
-#    return render(request, 'login.html')
-
 def inicio(request):
-    return render(request, 'inicio.html')
+    usuario = None
+    if request.session.get('usuario_id'):
+        try:
+            usuario = Usuario.objects.get(id=request.session['usuario_id'])
+        except Usuario.DoesNotExist:
+            pass
+    return render(request, 'inicio.html', {'usuario': usuario})
 
 def escaneo(request):
-    return render(request, 'escaneo.html')
+    usuario = None
+    if request.session.get('usuario_id'):
+        try:
+            usuario = Usuario.objects.get(id=request.session['usuario_id'])
+        except Usuario.DoesNotExist:
+            pass
+    return render(request, 'escaneo.html', {'usuario': usuario})
 
 def resultado(request):
-    return render(request, 'resultado.html')
+    usuario = None
+    if request.session.get('usuario_id'):
+        try:
+            usuario = Usuario.objects.get(id=request.session['usuario_id'])
+        except Usuario.DoesNotExist:
+            pass
+    return render(request, 'resultado.html', {'usuario': usuario})
 
-#def historial(request):
-#    return render(request, 'historial.html')
- 
 def historial(request):
     dni = request.GET.get('dni', '').strip()  # Obtener el DNI ingresado y eliminar espacios
 
@@ -135,8 +147,6 @@ def load_tflite_interpreter():
     return interpreter
 
 interpreter = load_tflite_interpreter()
-
-from django.utils import timezone  # Asegúrate de importar esto si decides establecer la fecha manualmente
 
 def guardar_resultado(request):
     if request.method == 'POST':
@@ -233,8 +243,6 @@ def guardar_historial(request):
     return render(request, "guardar_historial.html", {"form": form})
 
 
-from django.shortcuts import render, get_object_or_404
-from .models import Deteccion, Paciente
 
 def historial(request):
     dni = request.GET.get('dni')

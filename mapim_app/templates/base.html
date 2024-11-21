@@ -16,6 +16,7 @@
         <!-- Navbar -->
         <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
             <div class="container-fluid">
+                
                 <!-- Logo -->
                 <a class="navbar-brand" href="{% url 'inicio' %}">
                     <img src="{% static 'images/logo2.jpg' %}" alt="Logo" class="logo" style="width: 40px; height: 40px;">
@@ -44,19 +45,25 @@
                     </ul>
 
                     <!-- User Dropdown -->
-                    <div class="btn-group">
+                     <div class="btn-group">
                         <button type="button" class="btn btn-outline-light">
                             {% if usuario %}
-                            {{usuario.user}}
+                                {{ usuario.user }}
+                            {% else %}
+                                Invitado
                             {% endif %}
                         </button>
-            
+
                         <button type="button" class="btn btn-outline-light dropdown-toggle dropdown-toggle-split"
                             data-bs-toggle="dropdown" aria-expanded="false">
                             <span class="visually-hidden">Toggle Dropdown</span>
                         </button>
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="{% url 'login' %}">Cerrar Sesión</a></li>
+                            {% if usuario %} 
+                                <li><a class="dropdown-item" href="{% url 'logout' %}">Cerrar Sesión</a></li>
+                            {% else %}
+                                <li><a class="dropdown-item" href="{% url 'login' %}">Iniciar Sesión</a></li>
+                            {% endif %}
                         </ul>
                 </div>
             </div>

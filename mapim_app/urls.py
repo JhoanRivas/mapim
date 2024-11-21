@@ -20,5 +20,7 @@ urlpatterns = [
     path('eliminar_historial/<int:id>/', views.eliminar_historial, name='eliminar_historial'),
 
     path('resultado/', views.resultado, name='resultado'),
+    path('logout/', views.logout_usuario, name='logout'),
+
   
 ]
