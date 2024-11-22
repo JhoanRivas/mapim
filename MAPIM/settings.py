@@ -28,7 +28,7 @@ SECRET_KEY = 'django-insecure-56yhmnlo)3-8@h7f&xu0(1=s5ak$o6!m_=k2y%$_rv&5sc!pvk
 DEBUG = True
 
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', '0.0.0.0','www.mapim.digital', 'mapim.digital']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', '0.0.0.0','www.mapim.digital', 'mapim.digital','143.244.167.139']
 
 # Agrega tus dominios confiables para las solicitudes CSRF aquí
 CSRF_TRUSTED_ORIGINS = ['https://www.mapim.digital', 'https://mapim.digital']
