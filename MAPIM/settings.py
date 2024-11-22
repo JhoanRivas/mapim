@@ -12,7 +12,8 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 from pathlib import Path
 from django.contrib.messages import constants as messages
-
+from pathlib import Path
+from decouple import config
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -27,8 +28,10 @@ SECRET_KEY = 'django-insecure-56yhmnlo)3-8@h7f&xu0(1=s5ak$o6!m_=k2y%$_rv&5sc!pvk
 DEBUG = True
 
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', '0.0.0.0','www.mapim.digital', 'mapim.digital']
 
+# Agrega tus dominios confiables para las solicitudes CSRF aquí
+CSRF_TRUSTED_ORIGINS = ['https://www.mapim.digital', 'https://mapim.digital']
 
 MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
 
@@ -95,17 +98,28 @@ WSGI_APPLICATION = 'MAPIM.wsgi.application'
 #    }
 #}
 
+#DATABASES = {
+#    'default': {
+#        'ENGINE': 'django.db.backends.postgresql',
+#        'NAME': 'MAPIM',    #Nombre de la bd
+#        'USER': 'postgres',
+#        'PASSWORD': '123456789',
+#        'HOST': 'localhost',  # O la dirección IP de tu servidor de PostgreSQL
+#        'PORT': '5432',       # Puerto de PostgreSQL (5432 es el predeterminado)
+#    }
+#}
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'MAPIM',    #Nombre de la bd
-        'USER': 'postgres',
-        'PASSWORD': '123456789',
-        'HOST': 'localhost',  # O la dirección IP de tu servidor de PostgreSQL
-        'PORT': '5432',       # Puerto de PostgreSQL (5432 es el predeterminado)
+        'NAME': config('APP_POSTGRES_DB', default='MAPIM'),
+        'USER': config('APP_POSTGRES_USER', default='postgres'),
+        'PASSWORD': config('APP_POSTGRES_PASSWORD', default='123456789'),
+        #'HOST': config('APP_POSTGRES_HOST', default='localhost'),
+        'HOST': 'bd',
+        'PORT': int(config('APP_POSTGRES_PORT', default=5432)),  # Asegura que sea un número entero Interno Posgrest
     }
-}
-
+} 
 
 
 # Establece el límite en 10 MB (10 * 1024 * 1024 bytes)
@@ -134,9 +148,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/5.1/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'en-PE'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'America/Lima'
 
 USE_I18N = True
 

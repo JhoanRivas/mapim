@@ -1,0 +1,54 @@
+services:
+  bd:
+    image: postgres
+    restart: always
+    container_name: mapim_db_container
+    volumes:
+      - ./data/db:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: ${APP_POSTGRES_DB}
+      POSTGRES_USER: ${APP_POSTGRES_USER}
+      POSTGRES_PASSWORD: ${APP_POSTGRES_PASSWORD}
+    ports:
+      - "5433:5432" # 5433 es el puerto externo, 5432 es el puerto interno del contenedor PostgreSQL
+    networks:
+      - mapim
+
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: mapim_pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASS}
+    ports:
+      - "${PGADMIN_DEFAULT_PORT}:80"
+    depends_on:
+      - bd
+    links:
+      - bd:bd  
+    networks:
+      - mapim
+
+  mapim-app:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+    container_name: mapim_app_container
+    #                    conex docker     Puerto Interno Posgrest
+    command: ["./wait-for-it.sh", "bd", "5432", "python", "manage.py", "runserver", "0.0.0.0:8002"]
+    ports:
+      - "${APP_BACKEND_PORT}:8002"  # Cambié el puerto para que coincida
+    environment:
+      POSTGRES_NAME: ${APP_POSTGRES_DB}
+      POSTGRES_USER: ${APP_POSTGRES_USER}
+      POSTGRES_PASSWORD: ${APP_POSTGRES_PASSWORD}
+      APP_POSTGRES_PORT: ${APP_POSTGRES_PORT}  #  Puerto Interno Posgrest
+
+    depends_on:
+      - bd    
+    networks:
+      - mapim
+
+networks:
+  mapim:
+    driver: bridge
